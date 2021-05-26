@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="System.Management" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SystemMonitor.Application.Interfaces\SystemMonitor.Application.Interfaces.csproj" />
+    <ProjectReference Include="..\SystemMonitor.Common\SystemMonitor.Common.csproj" />
+    <ProjectReference Include="..\SystemMonitor.Domain\SystemMonitor.Domain.csproj" />
+    <ProjectReference Include="..\SystemMonitor.Interfaces\SystemMonitor.Interfaces.csproj" />
+    <ProjectReference Include="..\SystemMonitor.UI.Interfaces\SystemMonitor.UI.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
