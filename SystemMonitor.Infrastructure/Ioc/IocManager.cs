@@ -4,11 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity;
+using Prism.Unity;
+using SystemMonitor.Infrastructure.Interfaces.Dialogs;
 
 namespace SystemMonitor.Infrastructure.Ioc
 {
     public class IocManager : IIocManager
     {
+        private readonly IUnityContainer _container;
         private readonly IContainerRegistry _containerRegistry;
         private readonly List<Assembly> _assemblies = new List<Assembly>();
 
@@ -17,6 +21,7 @@ namespace SystemMonitor.Infrastructure.Ioc
             )
         {
             _containerRegistry = containerRegistry;
+            _container = _containerRegistry.GetContainer();
         }
 
         public void RegisterTypes(Assembly assembly)
@@ -80,6 +85,7 @@ namespace SystemMonitor.Infrastructure.Ioc
             RegisterSingletons(types);
             RegisterTransients(types);
             RegisterScoped(types);
+            RegisterDialogs(types);
         }
 
         private void RegisterSingletons(Type[] types)
@@ -110,6 +116,36 @@ namespace SystemMonitor.Infrastructure.Ioc
         private void RegisterScoped(Type from, Type to)
         {
             _containerRegistry.RegisterScoped(from, to);
+        }
+
+        private void RegisterDialogs(Type[] types)
+        {
+            var typesToRegister = GetTypesToRegister<IDialogView>(types);
+            foreach (var typeToRegister in typesToRegister)
+            {
+                RegisterDialog(typeToRegister);
+            }
+        }
+
+        private void RegisterDialog(Type typeToRegister)
+        {
+            var objectType = typeof(object);
+            var interfaceTypes = GetInterfaceTypesToRegister(typeToRegister);
+            foreach (var interfaceType in interfaceTypes)
+            {
+                var dependencyName = interfaceType.GetDependencyName();
+                // https://github.com/PrismLibrary/Prism/blob/master/src/Wpf/Prism.Wpf/Services/Dialogs/DialogService.cs
+                if (_containerRegistry.IsRegistered(objectType, dependencyName))
+                {
+                    continue;
+                }
+
+                // NOTE: that when using factory, we can not resolve instance with arguments
+                Func<IUnityContainer, object> factory
+                    = c => c.Resolve(interfaceType);
+
+                _container.RegisterFactory(objectType, dependencyName, factory);
+            }
         }
 
         private void RegisterTypes<TInterface>(Type[] types, Action<Type, Type> register)
@@ -169,7 +205,8 @@ namespace SystemMonitor.Infrastructure.Ioc
         {
             return typeof(ISingletonDependency) == type
                 || typeof(ITransientDependency) == type
-                || typeof(IScopedDependency) == type;
+                || typeof(IScopedDependency) == type
+                || typeof(IDialogView) == type;
         }
 
         private List<string> TypeNamePrefixToIgnore = new List<string>

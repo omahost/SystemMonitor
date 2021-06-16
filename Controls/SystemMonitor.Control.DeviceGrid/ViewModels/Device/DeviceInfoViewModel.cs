@@ -12,6 +12,8 @@ namespace SystemMonitor.Control.DeviceGrid.ViewModels
             _deviceStatus = new DeviceStatusViewModel(deviceInfo.Status);
         }
 
+        internal IDeviceInfo DeviceInfo => _deviceInfo;
+
         public DeviceType Type => _deviceInfo.Type;
         public bool IsRemote => _deviceInfo.IsRemote;
 

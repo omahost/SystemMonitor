@@ -1,0 +1,178 @@
+﻿<UserControl 
+    x:Class="SystemMonitor.Control.Receipt.ReceiptView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:converters="clr-namespace:SystemMonitor.Control.Converters;assembly=SystemMonitor.Control" 
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+            <Setter Property="ResizeMode" Value="CanMinimize"/>
+            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+        </Style>
+    </prism:Dialog.WindowStyle>
+    <UserControl.Resources>
+        <Style x:Key="HeaderTextStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="#BFBDBD" />
+        </Style>
+        <Style x:Key="RightStackPanelStyle" TargetType="{x:Type StackPanel}">
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style x:Key="ContentTextStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="5 0" />
+            <Style.Triggers>
+                <Trigger Property="Text" Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="LineSeparatorStyle" TargetType="{x:Type Line}">
+            <Setter Property="StrokeThickness" Value="1.5" />
+            <Setter Property="Stroke" Value="Black" />
+            <Setter Property="StrokeDashArray" Value="4,1" />
+            <Setter Property="Margin" Value="0 4 0 4" />
+            <Setter Property="X2" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" />
+        </Style>
+        <converters:ListViewOrdinalConverter x:Key="listViewOrdinalConverter"/>
+        <converters:ListViewLastItemVisibilityConverter x:Key="listViewLastItemVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Vertical">
+        <ScrollViewer x:Name="receiptView" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Vertical" 
+                            Margin="30 0 30 20" 
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding Receipt.BusinessName}" 
+                               Style="{StaticResource HeaderTextStyle}"/>
+                    <TextBlock Text="{Binding Receipt.BusinessTitle}" 
+                               Style="{StaticResource HeaderTextStyle}"/>
+                </StackPanel>
+
+                <DockPanel>
+                    <TextBlock Text="{Binding Receipt.ReceiptDate, StringFormat=dd.MM.yy HH:mm:ss}" 
+                               Style="{StaticResource ContentTextStyle}"/>
+
+                    <StackPanel Style="{StaticResource RightStackPanelStyle}">
+                        <TextBlock Text="ticket #:" 
+                                   Style="{StaticResource ContentTextStyle}" />
+                        <TextBlock Text="{Binding Receipt.TicketNumber}"
+                                   Style="{StaticResource ContentTextStyle}" />
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel>
+                    <TextBlock Text="{Binding Receipt.WaiterName}" 
+                               Style="{StaticResource ContentTextStyle}" />
+
+                    <StackPanel Style="{StaticResource RightStackPanelStyle}">
+                        <TextBlock Text="stolik #:" 
+                                   Style="{StaticResource ContentTextStyle}" />
+                        <TextBlock Text="{Binding Receipt.TableNumber}"
+                                   Style="{StaticResource ContentTextStyle}" />
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel>
+                    <TextBlock Text="{Binding Receipt.ServiceName}" 
+                               Style="{StaticResource ContentTextStyle}" />
+
+                    <StackPanel Style="{StaticResource RightStackPanelStyle}">
+                        <TextBlock Text="gości :" 
+                                   Style="{StaticResource ContentTextStyle}" />
+                        <TextBlock Text="{Binding Receipt.GuestsCount}"
+                                   Style="{StaticResource ContentTextStyle}" />
+                    </StackPanel>
+                </DockPanel>
+
+                <Line Style="{StaticResource LineSeparatorStyle}"/>
+
+                <TextBlock Text="{Binding Receipt.ServiceTypeDescription}"
+                           Style="{StaticResource ContentTextStyle}"
+                           HorizontalAlignment="Center"
+                           Margin="5 6"/>
+
+                <StackPanel HorizontalAlignment="Center" 
+                            Orientation="Horizontal"
+                            Margin="5 6">
+                    <TextBlock Text="zamówienie: "
+                               Style="{StaticResource ContentTextStyle}" />
+                    <TextBlock Text="{Binding Receipt.OrderDescription}"
+                               Style="{StaticResource ContentTextStyle}"/>
+                </StackPanel>
+
+                <Line Style="{StaticResource LineSeparatorStyle}"/>
+
+                <ListView ItemsSource="{Binding Receipt.OrderHistory}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="Wydanie #"
+                                               Style="{StaticResource ContentTextStyle}"/>
+                                    <TextBlock Text="{Binding 
+                                        RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},
+                                        Converter={StaticResource ResourceKey=listViewOrdinalConverter}}"
+                                               Style="{StaticResource ContentTextStyle}"/>
+                                </StackPanel>
+
+                                <ListView ItemsSource="{Binding Items}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Quantity}"
+                                                           Style="{StaticResource ContentTextStyle}"/>
+                                                <TextBlock Text=" x "
+                                                           Style="{StaticResource ContentTextStyle}"/>
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock Text="{Binding Title}"
+                                                               Style="{StaticResource ContentTextStyle}"/>
+                                                    <TextBlock Text="{Binding Description}"
+                                                               Style="{StaticResource ContentTextStyle}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+
+                                <StackPanel Visibility="{Binding 
+                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},
+                                    Converter={StaticResource ResourceKey=listViewLastItemVisibilityConverter}}"
+                                            HorizontalAlignment="Stretch" 
+                                            Margin="24 0">
+                                    <Line Style="{StaticResource LineSeparatorStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button Margin="10"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                Command="{Binding PrintCommand}"
+                CommandParameter="{Binding ElementName=receiptView}">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Printer" Margin="0 2 0 0"/>
+                <TextBlock Text="PRINT" Margin="4 0 0 0"/>
+            </StackPanel>
+        </Button>
+    </StackPanel>
+</UserControl>

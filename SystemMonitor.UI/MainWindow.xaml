@@ -8,6 +8,8 @@
     xmlns:prism="http://prismlibrary.com/" 
     xmlns:deviceGrid="clr-namespace:SystemMonitor.Control.DeviceGrid;assembly=SystemMonitor.Control.DeviceGrid"
     mc:Ignorable="d"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
     Title="Device Monitor" Height="450" Width="800"
     WindowState="Maximized"
     WindowStartupLocation="CenterScreen"

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SystemMonitor.Application.Interfaces\SystemMonitor.Application.Interfaces.csproj" />
     <ProjectReference Include="..\..\SystemMonitor.Domain.Interfaces\SystemMonitor.Domain.Interfaces.csproj" />
+    <ProjectReference Include="..\SystemMonitor.Control.Receipt.Interfaces\SystemMonitor.Control.Receipt.Interfaces.csproj" />
     <ProjectReference Include="..\SystemMonitor.Control\SystemMonitor.Control.csproj" />
   </ItemGroup>
 

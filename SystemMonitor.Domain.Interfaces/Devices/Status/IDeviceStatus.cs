@@ -2,7 +2,7 @@
 {
     public interface IDeviceStatus
     {
-        public DeviceStatusType Type { get; }
-        public string Description { get; }
+        DeviceStatusType Type { get; }
+        string Description { get; }
     }
 }

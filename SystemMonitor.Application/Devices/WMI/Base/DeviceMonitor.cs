@@ -72,10 +72,12 @@ namespace SystemMonitor.Application.Devices
         public virtual IList<IDeviceInfo> GetDevices()
         {
             var devices = new List<IDeviceInfo>();
-            using var managementDevices = GetManagementDeviceCollection();
-            foreach (var managementDevice in managementDevices)
+            using (var managementDevices = GetManagementDeviceCollection())
             {
-                devices.Add(Map(managementDevice));
+                foreach (var managementDevice in managementDevices)
+                {
+                    devices.Add(Map(managementDevice));
+                }
             }
             return devices;
         }

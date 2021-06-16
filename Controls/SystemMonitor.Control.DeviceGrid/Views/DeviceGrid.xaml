@@ -13,7 +13,15 @@
             AlternatingRowBackground="LightBlue" 
             AlternationCount="2"
             AutoGenerateColumns="True" 
-            ItemsSource="{Binding Devices}">
+            ItemsSource="{Binding Devices}"
+            SelectedValue="{Binding SelectedDevice}"
+            IsSynchronizedWithCurrentItem="True">
+            <DataGrid.InputBindings>
+                <MouseBinding
+                    MouseAction="LeftDoubleClick"
+                    Command="{Binding DoubleClickCommand}"
+                    />  
+            </DataGrid.InputBindings>
         </DataGrid>
     </Grid>
 </UserControl>

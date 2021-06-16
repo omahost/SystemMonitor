@@ -2,16 +2,18 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.1.0" />
     <PackageReference Include="Prism.Unity" Version="8.1.97" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Controls\SystemMonitor.Control.DeviceGrid\SystemMonitor.Control.DeviceGrid.csproj" />
+    <ProjectReference Include="..\Controls\SystemMonitor.Control.Receipt\SystemMonitor.Control.Receipt.csproj" />
     <ProjectReference Include="..\SystemMonitor.Application.Interfaces\SystemMonitor.Application.Interfaces.csproj" />
     <ProjectReference Include="..\SystemMonitor.Application\SystemMonitor.Application.csproj" />
     <ProjectReference Include="..\SystemMonitor.Domain\SystemMonitor.Domain.csproj" />

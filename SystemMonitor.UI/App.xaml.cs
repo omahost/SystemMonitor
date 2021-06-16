@@ -1,10 +1,12 @@
 ﻿using Prism.Ioc;
+using Prism.Modularity;
 using Prism.Unity;
 using System.Windows;
 using SystemMonitor.Application;
 using SystemMonitor.Application.Interfaces.App;
 using SystemMonitor.Domain;
 using SystemMonitor.Infrastructure;
+using SystemMonitor.Infrastructure.Interfaces.Modules;
 using SystemMonitor.UI.Interfaces;
 using Unity;
 
@@ -19,6 +21,13 @@ namespace SystemMonitor.UI
                 .GetWindow();
 
             return window;
+        }
+
+        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+        {
+            Container
+                .Resolve<IModuleLoader>()
+                .LoadModules(moduleCatalog);
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

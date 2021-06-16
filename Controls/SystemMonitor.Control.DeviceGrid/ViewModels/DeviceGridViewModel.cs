@@ -1,10 +1,12 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using SystemMonitor.Application.Interfaces.Devices;
 using SystemMonitor.Control.DeviceGrid.ViewModels;
 using SystemMonitor.Control.Extensions;
+using SystemMonitor.Control.Receipt.Interfaces;
 using SystemMonitor.Domain.Interfaces;
 
 namespace SystemMonitor.Control.DeviceGrid
@@ -12,16 +14,39 @@ namespace SystemMonitor.Control.DeviceGrid
     public class DeviceGridViewModel : BindableBase
     {
         private readonly IDeviceMonitorFacade _deviceMonitorFacade;
+        private readonly IReceiptPrinterFacade _receiptPrinterFacade;
 
         public DeviceGridViewModel(
-            IDeviceMonitorFacade deviceMonitorFacade
+            IDeviceMonitorFacade deviceMonitorFacade,
+            IReceiptPrinterFacade receiptPrinterFacade
             )
         {
             _deviceMonitorFacade = deviceMonitorFacade;
+            _receiptPrinterFacade = receiptPrinterFacade;
             _deviceMonitorFacade.Connected += Device_Connected;
             _deviceMonitorFacade.Disconnected += Device_Disconnected;
 
+            DoubleClickCommand = new DelegateCommand(OnDoubleClick);
+
             IntializeDevicesAsync();
+        }
+
+        private DeviceInfoViewModel _selectedDevice;
+        public DeviceInfoViewModel SelectedDevice
+        {
+            get => _selectedDevice;
+            set => SetProperty(ref _selectedDevice, value);
+        }
+
+        public DelegateCommand DoubleClickCommand { get; }
+        private void OnDoubleClick()
+        {
+            var deviceInfo = SelectedDevice.DeviceInfo;
+            if (deviceInfo.Type == DeviceType.Printer)
+            {
+                // TODO: may use CQRS (e.g MediatR), but for test task this should be enough
+                _receiptPrinterFacade.Print(SelectedDevice.DeviceInfo);
+            }
         }
 
         private void Device_Connected(object sender, DeviceMonitorEventArgs e)
