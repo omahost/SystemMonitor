@@ -17,6 +17,25 @@ namespace SystemMonitor.Domain.Devices
         public string Name { get; set; }
         public string Description { get; set; }
         public string Caption { get; set; }
+        public string ServerPath 
+        {
+            get
+            {
+                if (!IsRemote)
+                {
+                    return string.Empty;
+                }
+
+                if (!Name.StartsWith("\\\\"))
+                {
+                    return string.Empty;
+                }
+
+                var endIndex = Name.IndexOf("\\", 2);
+                var remotePath = Name.Substring(0, endIndex);
+                return remotePath;
+            }
+        }
 
         public override string ToString()
         {

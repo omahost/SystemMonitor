@@ -5,6 +5,7 @@
         DeviceType Type { get; }
         bool IsRemote { get; }
         IDeviceStatus Status { get; }
+        string ServerPath { get; }
         string DeviceId { get; }
         string PNPDeviceId { get; }
         string Name { get; }

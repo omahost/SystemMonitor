@@ -10,11 +10,31 @@ namespace SystemMonitor.Infrastructure.Printing
     {
         public void Print(Visual visual, IDeviceInfo device, string description)
         {
-            var printDialog = new PrintDialog
-            {
-                PrintQueue = new PrintQueue(new PrintServer(), device.Name)
-            };
+            var printDialog = CreatePrintDialog(device);
             printDialog.PrintVisual(visual, description);
+        }
+
+        private PrintDialog CreatePrintDialog(IDeviceInfo device)
+        {
+            return new PrintDialog
+            {
+                PrintQueue = CreatePrintQueue(device)
+            };
+        }
+
+        private PrintQueue CreatePrintQueue(IDeviceInfo device)
+        {
+            var printServer = CreatePrintServer(device);
+            return new PrintQueue(printServer, device.Name);
+        }
+
+        private PrintServer CreatePrintServer(IDeviceInfo device)
+        {
+            if (device.IsRemote)
+            {
+                return new PrintServer(device.ServerPath);
+            }
+            return new PrintServer();
         }
     }
 }
