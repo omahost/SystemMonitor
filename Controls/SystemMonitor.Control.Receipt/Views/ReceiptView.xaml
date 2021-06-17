@@ -26,6 +26,7 @@
             <Setter Property="Orientation" Value="Horizontal" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
             <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="5 0" />
         </Style>
         <Style x:Key="ContentTextStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="12" />
