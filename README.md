@@ -1,6 +1,9 @@
 Additional task:
 The ticket below should be send directly to the print device from the list. 
 By double click you should get the separate view with print button along with a preview of the ticket.
+<p align="center">
+  <img width="320" src="https://raw.githubusercontent.com/omahost/SystemMonitor/main/screenshots/test_ticket.png">
+</p>
 
 Notes: Printing was tested localy and on remotely own 3-inch Direct Thermal POS Printer.
 
