@@ -16,6 +16,7 @@ You can assign the specific printer from discovered list of devices.
 On the separate view User has the ability to view printed + waiting orders (if any) or even cancel it as well.
 
 2) Was implemented:
+
 2.1) I avoided cyclical server polling, and have used the easiest way by using long-polling technique: client will make a request and will be waiting until server will send a response and only after response will came, then will handle it and make next request for getting new orders.
 
 2.2)  I have implemented the following:
