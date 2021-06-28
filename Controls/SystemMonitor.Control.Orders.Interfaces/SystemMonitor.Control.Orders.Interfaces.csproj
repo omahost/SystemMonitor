@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\SystemMonitor.Infrastructure.Interfaces\SystemMonitor.Infrastructure.Interfaces.csproj" />
+        <ProjectReference Include="..\..\SystemMonitor.Interfaces\SystemMonitor.Interfaces.csproj" />
+    </ItemGroup>
+
+</Project>

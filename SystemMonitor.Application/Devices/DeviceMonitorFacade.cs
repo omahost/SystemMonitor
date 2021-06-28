@@ -9,6 +9,7 @@ namespace SystemMonitor.Application.Devices
     public class DeviceMonitorFacade : IDeviceMonitorFacade
     {
         private readonly IDeviceMonitor[] _monitors;
+        private readonly List<IDeviceInfo> _devices = new List<IDeviceInfo>();
 
         public DeviceMonitorFacade(
             IUSBDeviceMonitor usbDeviceMonitor,
@@ -26,12 +27,14 @@ namespace SystemMonitor.Application.Devices
         public event EventHandler<DeviceMonitorEventArgs> Connected;
         private void Device_Connected(object sender, DeviceMonitorEventArgs e)
         {
+            _devices.Add(e.Device);
             Connected?.Invoke(sender, e);
         }
 
         public event EventHandler<DeviceMonitorEventArgs> Disconnected;
         private void Device_Disconnected(object sender, DeviceMonitorEventArgs e)
         {
+            _devices.Remove(FindDeviceById(e.Device.DeviceId));
             Disconnected?.Invoke(sender, e);
         }
 
@@ -76,10 +79,22 @@ namespace SystemMonitor.Application.Devices
 
         public IList<IDeviceInfo> GetDevices()
         {
-            var devices = _monitors
-                .SelectMany(monitor => monitor.GetDevices())
-                .ToList();
-            return devices;
+            if (_devices.Count == 0)
+            {
+                var devices = _monitors.SelectMany(
+                    monitor => monitor.GetDevices()
+                    );
+
+                _devices.AddRange(devices);
+            }
+            return _devices.ToList();
+        }
+
+        public IDeviceInfo FindDeviceById(string deviceId)
+        {
+            return GetDevices().FirstOrDefault(
+                device => device.DeviceId == deviceId
+                );
         }
     }
 }

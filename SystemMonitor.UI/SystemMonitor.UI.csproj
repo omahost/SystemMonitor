@@ -13,7 +13,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Controls\SystemMonitor.Control.DeviceGrid\SystemMonitor.Control.DeviceGrid.csproj" />
+    <ProjectReference Include="..\Controls\SystemMonitor.Control.Orders\SystemMonitor.Control.Orders.csproj" />
+    <ProjectReference Include="..\Controls\SystemMonitor.Control.PinCode\SystemMonitor.Control.PinCode.csproj" />
     <ProjectReference Include="..\Controls\SystemMonitor.Control.Receipt\SystemMonitor.Control.Receipt.csproj" />
+    <ProjectReference Include="..\Controls\SystemMonitor.Control.Settings\SystemMonitor.Control.Settings.csproj" />
+    <ProjectReference Include="..\Controls\SystemMonitor.Control.Toolbar\SystemMonitor.Control.Toolbar.csproj" />
     <ProjectReference Include="..\SystemMonitor.Application.Interfaces\SystemMonitor.Application.Interfaces.csproj" />
     <ProjectReference Include="..\SystemMonitor.Application\SystemMonitor.Application.csproj" />
     <ProjectReference Include="..\SystemMonitor.Domain\SystemMonitor.Domain.csproj" />

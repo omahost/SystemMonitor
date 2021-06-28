@@ -12,5 +12,10 @@ namespace SystemMonitor.Control.Receipt.ViewModels
 
         public IReadOnlyCollection<OrderItemViewModel> Items 
             => _items.AsReadOnly();
+
+        public void AddItems(IEnumerable<OrderItemViewModel> items)
+        {
+            _items.AddRange(items);
+        }
     }
 }

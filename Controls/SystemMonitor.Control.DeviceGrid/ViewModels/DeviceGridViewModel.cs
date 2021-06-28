@@ -45,7 +45,6 @@ namespace SystemMonitor.Control.DeviceGrid
             if (deviceInfo.Type == DeviceType.Printer)
             {
                 // TODO: may use CQRS (e.g MediatR), but for test task this should be enough
-                _receiptPrinterFacade.Print(SelectedDevice.DeviceInfo);
             }
         }
 

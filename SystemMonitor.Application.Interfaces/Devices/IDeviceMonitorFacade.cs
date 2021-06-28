@@ -1,4 +1,5 @@
-﻿using SystemMonitor.Interfaces.Ioc;
+﻿using SystemMonitor.Domain.Interfaces;
+using SystemMonitor.Interfaces.Ioc;
 
 namespace SystemMonitor.Application.Interfaces.Devices
 {
@@ -6,5 +7,6 @@ namespace SystemMonitor.Application.Interfaces.Devices
         : IDeviceMonitor
         , ISingletonDependency
     {
+        IDeviceInfo FindDeviceById(string deviceId);
     }
 }

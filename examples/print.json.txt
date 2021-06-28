@@ -1,0 +1,140 @@
+﻿{
+  "company": "Widelcu",
+  "tax_id": "1234567890",
+  "generated_at": "2021-01-01 13:33:30",
+  "checks": [
+    {
+      "id": 1,
+      "items": [
+        {
+          "name": "Kotlet schabowy",
+          "price_gross": 23.99,
+          "vat": 1.08,
+          "stawka": "A",
+          "quantity": 1,
+          "amount": 23.99
+        },
+        {
+          "name": "Stek",
+          "price_gross": 40.2,
+          "vat": 1.08,
+          "stawka": "A",
+          "quantity": 1,
+          "amount": 40.2
+        },
+        {
+          "name": "Opakowanie",
+          "price_gross": 1,
+          "vat": 1.23,
+          "stawka": "B",
+          "quantity": 3,
+          "amount": 4
+        },
+        {
+          "name": "Ciastko pyszne",
+          "price_gross": 12,
+          "vat": 1.08,
+          "stawka": "A",
+          "quantity": 1,
+          "amount": 12
+        }
+      ],
+      "tax_a": 1.2,
+      "tax_b": 0.45,
+      "tax_c": 0,
+      "tax_d": 0,
+      "total_amount": 80.19,
+      "tax_id": "",
+      "internal_order_id": "2xs"
+    },
+    {
+      "id": 34,
+      "name": "Krewetki",
+      "price_gross": 45,
+      "vat": 1.23,
+      "stawka": "B",
+      "quantity": 2,
+      "amount": 90,
+      "tax_id": "",
+      "order_id": "4xs"
+    }
+  ],
+  "orders": {
+    "kitchen": [
+      {
+        "id": 2,
+        "order_note": "ciasto zapakować",
+        "order_type": "inside|outside",
+        "waiter": "Jan Kowalski",
+        "table": 4,
+        "ordered_at": "2021-03-12 04:33:23",
+        "items": [
+          {
+            "name": "Kotlet schabowy",
+            "note": "średnio przypieczony",
+            "rank": 1,
+            "client": "1"
+          },
+          {
+            "name": "Pizza margaritka",
+            "note": "32 cm z cebulą i groszkiem",
+            "rank": 2,
+            "client": "pani w okularach"
+          },
+          {
+            "name": "Ciasto z owocami",
+            "note": "na wynos",
+            "rank": 2,
+            "client": "pani w okularach"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "order_note": "",
+        "order_type": "inside|outside",
+        "waiter": "Monika Kowalska",
+        "table": 5,
+        "ordered_at": "2021-03-12 04:33:23",
+        "items": [
+          {
+            "name": "Kotlet schabowy",
+            "note": "średnio przypieczony",
+            "rank": 1,
+            "client": "1"
+          }
+        ]
+      }
+    ],
+    "bar": [
+      {
+        "id": 2,
+        "order_note": "ciasto zapakować",
+        "order_type": "inside|outside",
+        "waiter": "Janina Kowalski",
+        "table": 4,
+        "ordered_at": "2021-03-12 04:33:23",
+        "items": [
+          {
+            "name": "Herbata zielona dzbanek",
+            "note": "",
+            "rank": 1,
+            "client": "1"
+          },
+          {
+            "name": "Woda",
+            "note": "",
+            "rank": 2,
+            "client": "pani w okularach"
+          },
+          {
+            "name": "Ciasto z owocami",
+            "note": "na wynos",
+            "rank": 2,
+            "client": "pani w okularach"
+          }
+        ]
+      }
+    ]
+  }
+}

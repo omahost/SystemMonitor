@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using SystemMonitor.Domain.Interfaces.Orders;
 
 namespace SystemMonitor.Control.Receipt.ViewModels
 {
@@ -8,12 +10,17 @@ namespace SystemMonitor.Control.Receipt.ViewModels
     // be used Automapper from domain object into view model
     public class ReceiptDetailViewModel : Views.ViewModelBase
     {
-        private DateTime _receiptDate = new DateTime(2021, 05, 12, 12, 20, 53);
-        public DateTime ReceiptDate
+        private readonly IApplicationOrder _applicationOrder;
+
+        public ReceiptDetailViewModel(
+            IApplicationOrder applicationOrder
+            )
         {
-            get => _receiptDate;
-            set => SetProperty(ref _receiptDate, value);
+            _applicationOrder = applicationOrder;
+            InitializeOrderItems();
         }
+
+        public DateTime ReceiptDate => _applicationOrder.OrderedAt;
 
         private string _businessName = "gorny margines";
         public string BusinessName
@@ -29,99 +36,58 @@ namespace SystemMonitor.Control.Receipt.ViewModels
             set => SetProperty(ref _businessTitle, value);
         }
 
-        private string _ticketNumber = "282";
-        public string TicketNumber
-        {
-            get => _ticketNumber;
-            set => SetProperty(ref _ticketNumber, value);
-        }
+        public string TicketNumber => _applicationOrder.Id.ToString();
+        public string WaiterName => _applicationOrder.Waiter;
+        public string TableNumber => _applicationOrder.TableNumber;
+        public string ServiceName => _applicationOrder.Task.Name;
+        public int GuestsCount => _applicationOrder.CustomersCount;
+        public string ServiceTypeDescription => _applicationOrder.OrderNote;
 
-        private string _waiterName = "Imie kelnera";
-        public string WaiterName
-        {
-            get => _waiterName;
-            set => SetProperty(ref _waiterName, value);
-        }
-
-        private string _tableNumber = "5A";
-        public string TableNumber
-        {
-            get => _tableNumber;
-            set => SetProperty(ref _tableNumber, value);
-        }
-
-        private string _serviceName = "Kuchnia";
-        public string ServiceName
-        {
-            get => _serviceName;
-            set => SetProperty(ref _serviceName, value);
-        }
-
-        private uint _guestsCount = 2;
-        public uint GuestsCount
-        {
-            get => _guestsCount;
-            set => SetProperty(ref _guestsCount, value);
-        }
-
-        private string _serviceTypeName = "pizze zapakować";
-        public string ServiceTypeName
-        {
-            get => _serviceTypeName;
-            set => SetProperty(ref _serviceTypeName, value);
-        }
-
-        public string ServiceTypeDescription =>
-            $"{ServiceTypeName}, dostawa {DeliveryTime.Hours}:{DeliveryTime.Minutes}";
-
-        private TimeSpan _deliveryTime = new TimeSpan(12, 40, 0);
-        public TimeSpan DeliveryTime
-        {
-            get => _deliveryTime;
-            set => SetProperty(ref _deliveryTime, value);
-        }
-
-        private string _orderDescription = "w lokalu (lub na wynos)";
         public string OrderDescription
         {
-            get => _orderDescription;
-            set => SetProperty(ref _orderDescription, value);
+            get 
+            {
+                var orderType = _applicationOrder.OrderType;
+                if (orderType == ApplicationOrderType.Inside)
+                {
+                    return "Inside";
+                }
+
+                if (orderType == ApplicationOrderType.Outside)
+                {
+                    return "Outside";
+                }
+
+                if (orderType == ApplicationOrderType.InsideAndOutside)
+                {
+                    return "Inside | Outside";
+                }
+
+                return string.Empty;
+            }
         }
 
-        private List<OrderItemsViewModels> _orderHistory = new List<OrderItemsViewModels>
+        private List<OrderItemsViewModels> _orderHistory;
+        private void InitializeOrderItems()
         {
-            new OrderItemsViewModels
-            (
-                new OrderItemViewModel
-                {
-                    Title = "ROSÓŁ",
-                    Description = "bez zielonego",
-                    Quantity = 1
-                },
-                new OrderItemViewModel
-                {
-                    Title = "ZUPQ KREM Z CUKINII",
-                    Quantity = 2
-                }
-            ),
+            _orderHistory = new List<OrderItemsViewModels>();
+            var groupedItems = _applicationOrder.Items.GroupBy(item => item.Rank);
+            foreach (var group in groupedItems)
+            {
+                var orderItemsViewModels = new OrderItemsViewModels();
+                _orderHistory.Add(orderItemsViewModels);
 
-            new OrderItemsViewModels
-            (
-                new OrderItemViewModel
+                var orderItemViewModels = group.Select(item => new OrderItemViewModel
                 {
-                    Title = "SCHABOWY",
-                    Description = "dla dziecka bez panierki",
-                    Quantity = 2
-                },
-                new OrderItemViewModel
-                {
-                    Title = "PIZZA MARGARITKA +SER +PIECZARKI",
-                    Description = "(klient 1)",
-                    Quantity = 1
-                }
-            )
-        };
+                    Title = item.Name,
+                    Description = item.Note,
+                    Quantity = item.Quantity
+                });
 
+                orderItemsViewModels.AddItems(orderItemViewModels);
+            }
+        }
+        
         public ReadOnlyCollection<OrderItemsViewModels> OrderHistory 
             => _orderHistory.AsReadOnly();
     }

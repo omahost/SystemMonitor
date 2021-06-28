@@ -15,6 +15,7 @@ namespace SystemMonitor.Infrastructure.Ioc
         private readonly IUnityContainer _container;
         private readonly IContainerRegistry _containerRegistry;
         private readonly List<Assembly> _assemblies = new List<Assembly>();
+        private readonly List<Type> _typesToInstantiate = new List<Type>();
 
         public IocManager(
             IContainerRegistry containerRegistry
@@ -22,6 +23,36 @@ namespace SystemMonitor.Infrastructure.Ioc
         {
             _containerRegistry = containerRegistry;
             _container = _containerRegistry.GetContainer();
+        }
+
+        public void InstantiateTypes()
+        {
+            if (_typesToInstantiate.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var type in _typesToInstantiate)
+            {
+                var interfaceToInstantiate = GetTypeToInstantiate(type);
+                if (interfaceToInstantiate == null)
+                {
+                    throw new NotImplementedException();
+                }
+
+                var instance = _container.Resolve(interfaceToInstantiate);
+                if (instance is IInitializeDependency dependency)
+                {
+                    dependency.Initialize();
+                }
+            }
+        }
+
+        private Type GetTypeToInstantiate(Type type)
+        {
+            return type.GetInterfaces().FirstOrDefault(
+                interfaceType => interfaceType.Name == "I" + type.Name
+                );
         }
 
         public void RegisterTypes(Assembly assembly)
@@ -86,6 +117,7 @@ namespace SystemMonitor.Infrastructure.Ioc
             RegisterTransients(types);
             RegisterScoped(types);
             RegisterDialogs(types);
+            RegisterInstantiates(types);
         }
 
         private void RegisterSingletons(Type[] types)
@@ -120,7 +152,7 @@ namespace SystemMonitor.Infrastructure.Ioc
 
         private void RegisterDialogs(Type[] types)
         {
-            var typesToRegister = GetTypesToRegister<IDialogView>(types);
+            var typesToRegister = GetTypes<IDialogView>(types);
             foreach (var typeToRegister in typesToRegister)
             {
                 RegisterDialog(typeToRegister);
@@ -148,9 +180,16 @@ namespace SystemMonitor.Infrastructure.Ioc
             }
         }
 
+        private void RegisterInstantiates(Type[] types)
+        {
+            _typesToInstantiate.AddRange(
+                GetTypes<IInstantiateDependency>(types)
+                );
+        }
+
         private void RegisterTypes<TInterface>(Type[] types, Action<Type, Type> register)
         {
-            var typesToRegister = GetTypesToRegister<TInterface>(types);
+            var typesToRegister = GetTypes<TInterface>(types);
             foreach (var typeToRegister in typesToRegister)
             {
                 RegisterType(typeToRegister, register);
@@ -171,7 +210,7 @@ namespace SystemMonitor.Infrastructure.Ioc
             }
         }
 
-        private Type[] GetTypesToRegister<TInterface>(Type[] types)
+        private Type[] GetTypes<TInterface>(Type[] types)
         {
             return types
                 .Where(type => typeof(TInterface).IsAssignableFrom(type))

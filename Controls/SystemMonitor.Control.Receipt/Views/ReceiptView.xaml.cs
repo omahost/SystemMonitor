@@ -7,9 +7,13 @@ namespace SystemMonitor.Control.Receipt
         : UserControl
         , IReceiptView
     {
+        private ReceiptViewModel ViewModel 
+            => (ReceiptViewModel)DataContext;
+
         public ReceiptView()
         {
             InitializeComponent();
+            ViewModel.ReceiptView = receiptView;
         }
     }
 }

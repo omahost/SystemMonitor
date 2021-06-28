@@ -1,12 +1,17 @@
 ﻿using Prism.Ioc;
 using Prism.Modularity;
+using Prism.Mvvm;
 using Prism.Unity;
+using System;
+using System.Globalization;
+using System.Reflection;
 using System.Windows;
 using SystemMonitor.Application;
 using SystemMonitor.Application.Interfaces.App;
 using SystemMonitor.Domain;
 using SystemMonitor.Infrastructure;
 using SystemMonitor.Infrastructure.Interfaces.Modules;
+using SystemMonitor.Interfaces.Ioc;
 using SystemMonitor.UI.Interfaces;
 using Unity;
 
@@ -23,11 +28,30 @@ namespace SystemMonitor.UI
             return window;
         }
 
+        protected override void ConfigureViewModelLocator()
+        {
+            base.ConfigureViewModelLocator();
+
+            ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver((viewType) =>
+            {
+                var viewName = viewType.FullName;
+                viewName = viewName.Replace(".Views.", ".ViewModels.");
+                var viewAssemblyName = viewType.GetTypeInfo().Assembly.FullName;
+                var suffix = viewName.EndsWith("View") ? "Model" : "ViewModel";
+                var viewModelName = string.Format(CultureInfo.InvariantCulture, "{0}{1}, {2}", viewName, suffix, viewAssemblyName);
+                var viewModelType = Type.GetType(viewModelName);
+                return viewModelType;
+            });
+        }
+
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             Container
                 .Resolve<IModuleLoader>()
-                .LoadModules(moduleCatalog);
+                .LoadModules(moduleCatalog)
+                ;
+                
+            Container.Initialize();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

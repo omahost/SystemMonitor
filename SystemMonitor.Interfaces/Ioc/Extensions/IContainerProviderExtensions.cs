@@ -9,5 +9,10 @@ namespace SystemMonitor.Interfaces.Ioc
         {
             self.Resolve<IIocManager>().RegisterTypes(assembly);
         }
+
+        public static void Initialize(this IContainerProvider self)
+        {
+            self.Resolve<IIocManager>().InstantiateTypes();
+        }
     }
 }

@@ -1,0 +1,77 @@
+﻿<UserControl 
+    x:Class="SystemMonitor.Control.Settings.SettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:prism="http://prismlibrary.com/" 
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="800"
+    MaxWidth="460"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+            <Setter Property="ResizeMode" Value="CanMinimize"/>
+            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+        </Style>
+    </prism:Dialog.WindowStyle>
+    
+    <StackPanel Orientation="Vertical">
+
+        <Grid Margin="4 4 4 12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0"
+                     IsReadOnly="{Binding IsTasksEndpointReadonly}"
+                     Text="{Binding TasksEndpoint, UpdateSourceTrigger=PropertyChanged}"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center"
+                     Margin="4"/>
+
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal">
+                <Button Command="{Binding ChangeTasksEndpointCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Edit" Margin="0 2 0 0"/>
+                        <TextBlock Text="Edit" Margin="4 0 0 0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding SaveTasksEndpointCommand}" Margin="4 0 0 0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Check" Margin="0 2 0 0"/>
+                        <TextBlock Text="Save" Margin="4 0 0 0"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            
+        </Grid>
+
+        <DataGrid 
+            AlternatingRowBackground="LightBlue" 
+            AlternationCount="2"
+            AutoGenerateColumns="False" 
+            ItemsSource="{Binding Tasks}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Task Name" 
+                                    Binding="{Binding Name}" 
+                                    Width="auto" />
+                <DataGridTemplateColumn Header="Device" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Devices}" 
+                                      SelectedItem="{Binding SelectedDevice, UpdateSourceTrigger=PropertyChanged}"
+                                      DisplayMemberPath="Name" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</UserControl>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SystemMonitor.Common.Extensions
 {
@@ -15,6 +16,11 @@ namespace SystemMonitor.Common.Extensions
                     yield return element;
                 }
             }
+        }
+
+        public static ObservableCollection<TSource> ToObservableCollection<TSource>(this IEnumerable<TSource> source)
+        {
+            return new ObservableCollection<TSource>(source);
         }
     }
 }

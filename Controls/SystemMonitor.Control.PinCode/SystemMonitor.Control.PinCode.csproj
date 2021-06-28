@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MaterialDesignThemes" Version="4.1.0" />
+        <PackageReference Include="Prism.Core" Version="8.1.97" />
+        <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\SystemMonitor.Common\SystemMonitor.Common.csproj" />
+        <ProjectReference Include="..\SystemMonitor.Control.PinCode.Interfaces\SystemMonitor.Control.PinCode.Interfaces.csproj" />
+        <ProjectReference Include="..\SystemMonitor.Control\SystemMonitor.Control.csproj" />
+    </ItemGroup>
+
+</Project>

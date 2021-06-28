@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MaterialDesignThemes" Version="4.1.0" />
+        <PackageReference Include="Prism.Core" Version="8.1.97" />
+        <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\SystemMonitor.Application.Interfaces\SystemMonitor.Application.Interfaces.csproj" />
+        <ProjectReference Include="..\..\SystemMonitor.Common\SystemMonitor.Common.csproj" />
+        <ProjectReference Include="..\..\SystemMonitor.Domain.Interfaces\SystemMonitor.Domain.Interfaces.csproj" />
+        <ProjectReference Include="..\..\SystemMonitor.Infrastructure.Interfaces\SystemMonitor.Infrastructure.Interfaces.csproj" />
+        <ProjectReference Include="..\SystemMonitor.Control.Orders.Interfaces\SystemMonitor.Control.Orders.Interfaces.csproj" />
+        <ProjectReference Include="..\SystemMonitor.Control.Receipt.Interfaces\SystemMonitor.Control.Receipt.Interfaces.csproj" />
+        <ProjectReference Include="..\SystemMonitor.Control\SystemMonitor.Control.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Views\OrdersControl.xaml">
+        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      </Page>
+    </ItemGroup>
+
+</Project>

@@ -12,6 +12,7 @@
   </ItemGroup>
     
   <ItemGroup>
+    <ProjectReference Include="..\..\SystemMonitor.Domain.Interfaces\SystemMonitor.Domain.Interfaces.csproj" />
     <ProjectReference Include="..\SystemMonitor.Control.Receipt.Interfaces\SystemMonitor.Control.Receipt.Interfaces.csproj" />
     <ProjectReference Include="..\SystemMonitor.Control\SystemMonitor.Control.csproj" />
   </ItemGroup>

@@ -67,6 +67,12 @@ namespace SystemMonitor.Infrastructure.Dialogs
             remove => _dialogWindow.Loaded -= value;
         }
 
+        public event EventHandler ContentRendered
+        {
+            add => _window.ContentRendered += value;
+            remove => _window.ContentRendered -= value;
+        }
+
         public event EventHandler Closed
         {
             add => _dialogWindow.Closed += value;

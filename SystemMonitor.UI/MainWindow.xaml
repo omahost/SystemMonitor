@@ -6,7 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:SystemMonitor.UI"
     xmlns:prism="http://prismlibrary.com/" 
-    xmlns:deviceGrid="clr-namespace:SystemMonitor.Control.DeviceGrid;assembly=SystemMonitor.Control.DeviceGrid"
+    xmlns:devices="clr-namespace:SystemMonitor.Control.DeviceGrid;assembly=SystemMonitor.Control.DeviceGrid"
+    xmlns:toolbar="clr-namespace:SystemMonitor.Control.Toolbar;assembly=SystemMonitor.Control.Toolbar"
     mc:Ignorable="d"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}"
@@ -14,7 +15,8 @@
     WindowState="Maximized"
     WindowStartupLocation="CenterScreen"
     prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-        <deviceGrid:DeviceGrid/>
-    </Grid>
+    <StackPanel Orientation="Vertical">
+        <toolbar:ToolbarControl/>
+        <devices:DeviceGrid/>
+    </StackPanel>
 </Window>
