@@ -1,3 +1,6 @@
+To view video of working application see next video:
+https://www.youtube.com/watch?v=cTRfOLWLcho
+
 Additional task:
 1) Task description:
 User in the settings provide the JSON url (GET). 
